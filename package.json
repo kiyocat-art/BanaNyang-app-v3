@@ -1,0 +1,73 @@
+{
+  "name": "bananang-app",
+  "version": "1.0.0",
+  "description": "Based on the NanoBanana AI model, generate three-view character sheets and freely edit costume designs.",
+  "homepage": ".",
+  "main": "main.js",
+  "scripts": {
+    "build": "esbuild src/index.tsx --bundle --outfile=out/bundle.js --loader:.ts=ts --loader:.tsx=tsx --platform=browser --format=esm --external:@google/genai --external:react --external:react-dom --external:react-dom/* --external:zustand",
+    "start": "npm run build && electron .",
+    "make-icon": "node scripts/create-icon.js",
+    "dist": "npm run build && npm run make-icon && electron-builder",
+    "package": "npm run dist",
+    "make-installer": "npm install && npm run dist"
+  },
+  "author": "kiyocat",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^1.19.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "electron": "^31.0.2",
+    "electron-builder": "^24.13.3",
+    "esbuild": "^0.21.5",
+    "typescript": "^5.4.5",
+    "sharp": "^0.33.4"
+  },
+  "build": {
+    "appId": "com.kiyocat.bananang",
+    "productName": "다함께 만들어 바나냥!",
+    "files": [
+      "out/bundle.js",
+      "index.html",
+      "main.js",
+      "preload.js",
+      "assets/**/*",
+      "build/icon.png"
+    ],
+    "icon": "build/icon.png",
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "uninstallDisplayName": "다함께 만들어 바나냥! Uninstall"
+    },
+    "fileAssociations": [
+      {
+        "ext": "bananyang",
+        "name": "BanaNyang Workspace",
+        "role": "Editor",
+        "icon": "build/icon.png"
+      }
+    ]
+  }
+}
